@@ -66,12 +66,12 @@ class PuzzleRepository {
       ],
     ),
     PuzzleImage(
-      imagePath: 'assets/images/arjuna_aiming.png',
+      imagePath: 'assets/images/gandhari_cursing.jpeg',
       name: 'Bhima\'s Might',
       encodingType: EncodingType.urlEncoding,
       questions: [
         PuzzleQuestion(
-          question: "How many rings are on Bhima's mace?",
+          question: "Lying still after the battle’s wrath, A warrior of pride, whose fate was sealed in the aftermath. Wounded and broken, yet with strength did he stand, Who is the one who rests upon the sand?",
           answer: "5",
           encodedClue: "How%20many%20circles%20of%20power%20does%20the%20mighty%20mace%20bear%3F",
           encodedCode: 'fhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhixueeeeeeeeeeeehfffffffffffffffffffffffffffffffffffffffffffffffffff',

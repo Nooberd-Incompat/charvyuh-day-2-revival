@@ -66,13 +66,13 @@ flutter:
         - asset: assets/fonts/Poppins-Light.ttf
           weight: 300
   assets:
-    - assets/images/draupadi_scene.jpeg
-    - assets/images/arjuna_aiming.jpeg
-    - assets/images/bhishma_scene.jpeg
-    - assets/images/chariot_scene.jpeg
-    - assets/images/eklavya_scene.jpeg
-    - assets/images/kamsa.jpeg
-    - assets/images/krishna_mountain.jpeg
+    - assets/images/draupadi_scene.jpg
+    - assets/images/arjuna_aiming.png
+    - assets/images/bhishma_scene.jpg
+    - assets/images/chariot_scene.jpg
+    - assets/images/eklavya_scene.jpg
+    - assets/images/kamsa.jpg
+    - assets/images/krishna_mountain.jpg
     - assets/images/gandhari_cursing.jpeg
 
   # The following line ensures that the Material Icons font is
