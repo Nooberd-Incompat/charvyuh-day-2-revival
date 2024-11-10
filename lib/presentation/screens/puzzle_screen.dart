@@ -21,14 +21,22 @@ class PuzzleScreen extends StatefulWidget {
 }
 
 class _PuzzleScreenState extends State<PuzzleScreen> {
+  late List<PuzzleImage> _availableQuestions;
   late PuzzleImage _currentImage;
   late PuzzleQuestion _currentQuestion;
   final _answerController = TextEditingController();
+  int _solvedCount = 0;
+  Set<String> _solvedQuestions = {}; // Using Set for more efficient lookups
 
   @override
   void initState() {
     super.initState();
     _checkInitialPermissions();
+    _initializeQuestions();
+  }
+
+  void _initializeQuestions() {
+    _availableQuestions = List.from(PuzzleRepository.puzzleImages);
     _selectRandomPuzzle();
   }
 
@@ -37,11 +45,9 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
     if (Platform.isAndroid) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
       if (androidInfo.version.sdkInt >= 33) {
-        // Android 13 and above needs media permissions
         await Permission.photos.request();
         await Permission.videos.request();
       } else {
-        // Below Android 13 needs storage permission
         await Permission.storage.request();
       }
     }
@@ -50,7 +56,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
   // Method to request the necessary permissions
   Future<Map<Permission, PermissionStatus>> _requestPermissions() async {
     Map<Permission, PermissionStatus> statuses = {};
-   
+
     if (Platform.isAndroid) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
       if (androidInfo.version.sdkInt >= 33) {
@@ -61,22 +67,23 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
     } else if (Platform.isIOS) {
       statuses = await [Permission.photos].request();
     }
-   
+
     return statuses;
   }
 
   // Handle permission request and show dialog if denied
   Future<bool> _handlePermissionRequest() async {
     final statuses = await _requestPermissions();
-   
-    final denied = statuses.values.any((status) => status.isDenied || status.isPermanentlyDenied);
+
+    final denied = statuses.values
+        .any((status) => status.isDenied || status.isPermanentlyDenied);
     if (denied) {
       if (mounted) {
         _showPermissionDeniedDialog();
       }
       return false;
     }
-   
+
     return true;
   }
 
@@ -87,9 +94,8 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
         return AlertDialog(
           title: const Text('Permission Required'),
           content: const Text(
-            'This feature requires storage permission to download files. '
-            'Please grant the permission in your device settings to continue.'
-          ),
+              'This feature requires storage permission to download files. '
+              'Please grant the permission in your device settings to continue.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -125,11 +131,63 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
     }
   }
 
-  // Select random puzzle question
   void _selectRandomPuzzle() {
+    if (_availableQuestions.isEmpty) {
+      _initializeQuestions();
+    }
+
     final random = Random();
-    _currentImage = PuzzleRepository.puzzleImages[random.nextInt(PuzzleRepository.puzzleImages.length)];
-    _currentQuestion = _currentImage.questions[random.nextInt(_currentImage.questions.length)];
+
+    // Create a list of all available questions that haven't been solved
+    List<(PuzzleImage, PuzzleQuestion)> availablePairs = [];
+
+    for (var image in _availableQuestions) {
+      for (var question in image.questions) {
+        // Using question and answer combination as a unique identifier
+        String questionKey = '${question.question}_${question.answer}';
+        if (!_solvedQuestions.contains(questionKey)) {
+          availablePairs.add((image, question));
+        }
+      }
+    }
+
+    if (availablePairs.isEmpty) {
+      // If all questions are solved, reset the list
+      _solvedQuestions.clear();
+      _initializeQuestions();
+      return;
+    }
+
+    // Select a random question from available pairs
+    final randomPair = availablePairs[random.nextInt(availablePairs.length)];
+    _currentImage = randomPair.$1;
+    _currentQuestion = randomPair.$2;
+    _answerController.clear();
+  }
+
+  void _handleNextQuestion() {
+    setState(() {
+      _selectRandomPuzzle();
+    });
+  }
+
+  void _handleCorrectAnswer() {
+    setState(() {
+      _solvedCount++;
+      // Store question+answer combination instead of ID
+      _solvedQuestions
+          .add('${_currentQuestion.question}_${_currentQuestion.answer}');
+
+      if (_solvedCount >= 5) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SuccessScreen(teamId: widget.teamId)),
+        );
+      } else {
+        _selectRandomPuzzle();
+      }
+    });
   }
 
   // Copy to clipboard functionality
@@ -145,51 +203,51 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
 
   // Download the text file
   Future<void> _downloadTextFile() async {
-  final hasPermission = await _handlePermissionRequest();
-  if (!hasPermission) {
-    return;
-  }
-
-  try {
-    final directory = await _getDownloadPath();
-    if (directory == null) {
-      throw Exception('Could not access downloads directory');
+    final hasPermission = await _handlePermissionRequest();
+    if (!hasPermission) {
+      return;
     }
 
-    if (mounted) {
-      _showDownloadProgress();
-    }
+    try {
+      final directory = await _getDownloadPath();
+      if (directory == null) {
+        throw Exception('Could not access downloads directory');
+      }
 
-    final filePath = await _copyAssetToLocalDirectory(_currentQuestion.codeFilePath);
+      if (mounted) {
+        _showDownloadProgress();
+      }
 
-    if (mounted) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('File downloaded successfully to $filePath'),
-          backgroundColor: Colors.green,
-          action: SnackBarAction(
-            label: 'VIEW',
-            onPressed: () {
-              // Open the file using open_file package
-              OpenFile.open(filePath);
-            },
+      final filePath =
+          await _copyAssetToLocalDirectory(_currentQuestion.codeFilePath);
+
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('File downloaded successfully to $filePath'),
+            backgroundColor: Colors.green,
+            action: SnackBarAction(
+              label: 'VIEW',
+              onPressed: () {
+                OpenFile.open(filePath);
+              },
+            ),
           ),
-        ),
-      );
-    }
-  } catch (e) {
-    if (mounted) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error downloading file: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error downloading file: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
-}
 
   // Show download progress dialog
   void _showDownloadProgress() {
@@ -272,7 +330,8 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
       onPressed: _downloadTextFile,
       icon: const Icon(Icons.download),
       label: const Text('Download Code File'),
-      style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
+      style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
     );
   }
 
@@ -282,6 +341,25 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
       appBar: AppBar(
         title: const Text('Decode the Mystery'),
         automaticallyImplyLeading: false,
+        actions: [
+          Center(
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade100,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                'Questions Solved: $_solvedCount/5',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -289,6 +367,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
+              elevation: 4,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -296,43 +375,80 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                   children: [
                     const Text(
                       'Your Quest:',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     Text(
                       _currentQuestion.question,
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 18),
                     ),
-                    const SizedBox(height: 16),
-                    _buildEncodedSection('Encoded Clue', _currentQuestion.encodedClue),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 24),
+                    _buildEncodedSection(
+                        'Encoded Clue', _currentQuestion.encodedClue),
+                    const SizedBox(height: 20),
                     _buildDownloadButton(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     TextField(
                       controller: _answerController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Your Answer',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.question_answer),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: const Icon(Icons.question_answer),
+                        fillColor: Colors.grey.shade50,
+                        filled: true,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_answerController.text == _currentQuestion.answer) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) =>  SuccessScreen(teamId: widget.teamId)),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Incorrect answer. Try again!')),
-                            );
-                          }
-                        },
-                        child: const Text('Submit Answer'),
-                      ),
+                    const SizedBox(height: 24),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            if (_answerController.text.trim() ==
+                                _currentQuestion.answer.trim()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Correct answer! Moving to next question.'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                              _handleCorrectAnswer();
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Incorrect answer. Try again!'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.check_circle),
+                          label: const Text('Submit Answer'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: _handleNextQuestion,
+                          icon: const Icon(Icons.skip_next),
+                          label: const Text('Next Question'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

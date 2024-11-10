@@ -78,8 +78,13 @@ flutter:
     - assets/images/kamsa.jpg
     - assets/images/krishna_mountain.jpg
     - assets/images/gandhari_cursing.jpeg
-    - assets/codes/krishna_mountain_1.txt
-    - assets/codes/draupadi.txt
+    - assets/images/dhritarashtra.jpg
+    - assets/images/mahabharat.jpg
+    - assets/codes/guess.txt
+    - assets/codes/honor.txt
+    - assets/codes/keep_guessing.txt
+    - assets/codes/purrgatory.txt
+    - assets/codes/revelations.txt
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

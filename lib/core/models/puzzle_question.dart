@@ -1,13 +1,15 @@
 class PuzzleQuestion {
+  final String id; // Add this field
   final String question;
-  final String answer;
   final String encodedClue;
+  final String answer;
   final String codeFilePath;
 
-  const PuzzleQuestion({
+  PuzzleQuestion({
+    required this.id,
     required this.question,
-    required this.answer,
     required this.encodedClue,
-    required this.codeFilePath
+    required this.answer,
+    required this.codeFilePath,
   });
 }
