@@ -7,6 +7,7 @@ import '../../core/models/puzzle_question.dart';
 class PuzzleRepository {
   static final List<PuzzleImage> puzzleImages = [
     PuzzleImage(
+      //ARJUN
       id: "arjuna_1", // Added ID for the image
       imagePath: 'assets/images/arjuna_aiming.png',
       name: 'Arjuna\'s Aim',
@@ -16,7 +17,13 @@ class PuzzleRepository {
           id: "arjuna_q1", // Added ID for the question
           question: "Who is holding the weapon?",
           answer: "Arjun",
-          encodedClue: "Some clue about base64 encoding",
+          encodedClue:  """
+        I turn your text into a form obscure,
+        With letters and digits, I'm easy to endure.
+        I scramble things, but not for disguise,
+        Just to make them fit in a smaller size.
+        What am I?
+    """,
           codeFilePath: 'assets/codes/keep_guessing.txt',
         ),
       ],
@@ -31,7 +38,11 @@ class PuzzleRepository {
           id: "bhishma_q1",
           question: "How many horses are there and what is the colour of the mighty hero's dhoti. Format of the answer: 14 Black",
           answer: "3 Yellow",
-          encodedClue: "Some clue about base32 encoding",
+          encodedClue: """I take your data and break it apart,
+                          Into 32 symbols, to play my part.
+                          It’s still there, but hard to find,
+                          A simple encoding for peace of mind.
+                          What am I?""",
           codeFilePath: 'assets/codes/guess.txt',
         ),
       ],
@@ -44,9 +55,13 @@ class PuzzleRepository {
       questions: [
         PuzzleQuestion(
           id: "draupadi_q1",
-          question: "some question ... ",
+          question: "What is the colour of her cloth and who is on top right corner. Format of the answer: Colour Naruto",
           answer: "14",
-          encodedClue: "Some clue about base58 encoding",
+          encodedClue: """I trim the clutter, keep it clean,
+                          Letters and numbers, but some not seen.
+                          No zeros or ones, to confuse the view,
+                          Just enough to keep it clear and true.
+                          What am I?""",
           codeFilePath: 'assets/codes/honor.txt',
         ),
       ],
@@ -167,3 +182,35 @@ class PuzzleRepository {
     return puzzleImages.fold(0, (sum, image) => sum + image.questions.length);
   }
 }
+
+
+/*
+base64
+I turn your text into a form obscure,
+With letters and digits, I’m easy to endure.
+I scramble things, but not for disguise,
+Just to make them fit in a smaller size.
+What am I?
+
+base32
+I take your data and break it apart,
+Into 32 symbols, to play my part.
+It’s still there, but hard to find,
+A simple encoding for peace of mind.
+What am I?
+
+base58
+I trim the clutter, keep it clean,
+Letters and numbers, but some not seen.
+No zeros or ones, to confuse the view,
+Just enough to keep it clear and true.
+What am I?
+
+
+base85
+I take your text and stretch it wide,
+With 85 symbols, nothing to hide.
+It’s compact, it’s dense, it’s hard to decode,
+But useful when you need a lighter load.
+What am I?
+*/
