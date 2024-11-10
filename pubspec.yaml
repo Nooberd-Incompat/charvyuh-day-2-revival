@@ -37,7 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   path_provider: ^2.1.2
   device_info_plus: ^9.0.0
-  permission_handler: ^11.0.0
+  permission_handler: ^11.3.1
+  open_file: ^3.2.1
 
 
 dev_dependencies:
@@ -78,6 +79,7 @@ flutter:
     - assets/images/krishna_mountain.jpg
     - assets/images/gandhari_cursing.jpeg
     - assets/codes/krishna_mountain_1.txt
+    - assets/codes/draupadi.txt
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

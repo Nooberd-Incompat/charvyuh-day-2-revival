@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:chakra_level1/presentation/screens/success_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:open_file/open_file.dart';
 import '../../core/models/puzzle_image.dart';
 import '../../core/models/puzzle_question.dart';
 import '../../data/repositories/puzzle_repository.dart';
@@ -28,15 +28,111 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
   @override
   void initState() {
     super.initState();
+    _checkInitialPermissions();
     _selectRandomPuzzle();
   }
 
+  // Method to check initial permissions
+  Future<void> _checkInitialPermissions() async {
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt >= 33) {
+        // Android 13 and above needs media permissions
+        await Permission.photos.request();
+        await Permission.videos.request();
+      } else {
+        // Below Android 13 needs storage permission
+        await Permission.storage.request();
+      }
+    }
+  }
+
+  // Method to request the necessary permissions
+  Future<Map<Permission, PermissionStatus>> _requestPermissions() async {
+    Map<Permission, PermissionStatus> statuses = {};
+   
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt >= 33) {
+        statuses = await [Permission.photos, Permission.videos].request();
+      } else {
+        statuses = await [Permission.storage].request();
+      }
+    } else if (Platform.isIOS) {
+      statuses = await [Permission.photos].request();
+    }
+   
+    return statuses;
+  }
+
+  // Handle permission request and show dialog if denied
+  Future<bool> _handlePermissionRequest() async {
+    final statuses = await _requestPermissions();
+   
+    final denied = statuses.values.any((status) => status.isDenied || status.isPermanentlyDenied);
+    if (denied) {
+      if (mounted) {
+        _showPermissionDeniedDialog();
+      }
+      return false;
+    }
+   
+    return true;
+  }
+
+  void _showPermissionDeniedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Permission Required'),
+          content: const Text(
+            'This feature requires storage permission to download files. '
+            'Please grant the permission in your device settings to continue.'
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                openAppSettings();
+              },
+              child: const Text('Open Settings'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Copy asset file to local directory
+  Future<String> _copyAssetToLocalDirectory(String assetPath) async {
+    final fileName = assetPath.split('/').last;
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/$fileName';
+
+    try {
+      final byteData = await rootBundle.load(assetPath);
+      final file = File(filePath);
+      await file.writeAsBytes(byteData.buffer.asUint8List());
+      return filePath;
+    } catch (e) {
+      print("Error copying asset to local directory: $e");
+      return '';
+    }
+  }
+
+  // Select random puzzle question
   void _selectRandomPuzzle() {
     final random = Random();
     _currentImage = PuzzleRepository.puzzleImages[random.nextInt(PuzzleRepository.puzzleImages.length)];
     _currentQuestion = _currentImage.questions[random.nextInt(_currentImage.questions.length)];
   }
 
+  // Copy to clipboard functionality
   void _copyToClipboard(String text, String label) {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
@@ -47,85 +143,84 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
     );
   }
 
-  Future<bool> _requestStoragePermission() async {
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      if (androidInfo.version.sdkInt >= 33) {
-        // For Android 13 and above
-        final status = await Permission.photos.request();
-        return status.isGranted;
-      } else {
-        // For Android 12 and below
-        final storage = await Permission.storage.request();
-        return storage.isGranted;
-      }
-    }
-    return true;
-  }
-
+  // Download the text file
   Future<void> _downloadTextFile() async {
-    try {
-      // Request appropriate storage permission first
-      final hasPermission = await _requestStoragePermission();
-      if (!hasPermission) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Storage permission is required to download files'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-        return;
-      }
-
-      // Get the downloads directory
-      final directory = await _getDownloadPath();
-      if (directory == null) {
-        throw Exception('Could not access downloads directory');
-      }
-
-      final fileName = _currentQuestion.codeFilePath.split('/').last;
-      final filePath = '${directory.path}/$fileName';
-
-      // Copy file from assets to downloads
-      ByteData data = await rootBundle.load(_currentQuestion.codeFilePath);
-      List<int> bytes = data.buffer.asUint8List();
-      final file = File(filePath);
-      await file.writeAsBytes(bytes);
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('File downloaded successfully to ${directory.path}'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error downloading file: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+  final hasPermission = await _handlePermissionRequest();
+  if (!hasPermission) {
+    return;
   }
 
+  try {
+    final directory = await _getDownloadPath();
+    if (directory == null) {
+      throw Exception('Could not access downloads directory');
+    }
+
+    if (mounted) {
+      _showDownloadProgress();
+    }
+
+    final filePath = await _copyAssetToLocalDirectory(_currentQuestion.codeFilePath);
+
+    if (mounted) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('File downloaded successfully to $filePath'),
+          backgroundColor: Colors.green,
+          action: SnackBarAction(
+            label: 'VIEW',
+            onPressed: () {
+              // Open the file using open_file package
+              OpenFile.open(filePath);
+            },
+          ),
+        ),
+      );
+    }
+  } catch (e) {
+    if (mounted) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error downloading file: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+}
+
+  // Show download progress dialog
+  void _showDownloadProgress() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Downloading file...'),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Get the download path
   Future<Directory?> _getDownloadPath() async {
     Directory? directory;
     try {
       if (Platform.isAndroid) {
-        // Get the downloads directory on Android
         directory = Directory('/storage/emulated/0/Download');
-        // Create the directory if it doesn't exist
         if (!await directory.exists()) {
           directory = await directory.create(recursive: true);
         }
       } else {
-        // For iOS and other platforms, use the documents directory
         directory = await getApplicationDocumentsDirectory();
       }
     } catch (e) {
@@ -134,7 +229,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
     return directory;
   }
 
-
+  // Build encoded clue section
   Widget _buildEncodedSection(String title, String content) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,10 +239,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             IconButton(
               icon: const Icon(Icons.copy, size: 20),
@@ -166,10 +258,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
             padding: const EdgeInsets.all(8),
             child: SelectableText(
               content,
-              style: const TextStyle(
-                fontFamily: 'monospace',
-                fontSize: 14,
-              ),
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
             ),
           ),
         ),
@@ -177,14 +266,13 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
     );
   }
 
+  // Build download button
   Widget _buildDownloadButton() {
     return ElevatedButton.icon(
       onPressed: _downloadTextFile,
       icon: const Icon(Icons.download),
       label: const Text('Download Code File'),
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
+      style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
     );
   }
 
@@ -208,10 +296,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                   children: [
                     const Text(
                       'Your Quest:',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -235,33 +320,18 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_answerController.text.trim().toLowerCase() ==
-                              _currentQuestion.answer.toLowerCase()) {
+                          if (_answerController.text == _currentQuestion.answer) {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => SuccessScreen(teamId: widget.teamId),
-                              ),
+                              MaterialPageRoute(builder: (context) =>  SuccessScreen(teamId: widget.teamId)),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Incorrect answer. Try again!'),
-                                backgroundColor: Colors.red,
-                              ),
+                              const SnackBar(content: Text('Incorrect answer. Try again!')),
                             );
                           }
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 16,
-                          ),
-                          child: Text(
-                            'Submit Answer',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
+                        child: const Text('Submit Answer'),
                       ),
                     ),
                   ],

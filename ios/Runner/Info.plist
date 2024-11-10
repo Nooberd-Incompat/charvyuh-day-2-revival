@@ -16,6 +16,8 @@
 	<string>chakra_level1</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	 <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need access to save downloaded files to your device.</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
