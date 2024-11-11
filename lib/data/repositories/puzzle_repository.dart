@@ -78,14 +78,13 @@ What am I?
           question:
               "What is the colour of her cloth and who is on top right corner. Format of the answer: Colour Naruto",
           answer: "White Krishna",
-          encodedClue: """I’m compact and clever, not often in sight,
-In the world of QR, I make data light.
-A mix of letters and numbers I hold,
-Shrinking bytes down, precise and controlled.
-I am half of the right triangle,
-Not hex, nor sixty-four, but tailored to fit,
-In a specialized role, I quietly sit.
-What am I?""",
+          encodedClue: """Silent in systems, day after day,
+Letters and numbers in my display.
+Half of a square's diagonal way,
+Not sixty-four or two's parade.
+When QR codes need to shrink their size,
+In health passes, there I reside.
+What encoding am I?""",
           codeFilePath: 'assets/codes/honor.txt',
         ),
       ],
@@ -167,15 +166,13 @@ What am I?""",
           question:
               "Under the hill he holds high, how many humans gather for shelter?",
           answer: "16",
-          encodedClue: """I’m compact and clever, not often in sight,
-In the world of QR, I make data light.
-A mix of letters and numbers I hold,
-Shrinking bytes down, precise and controlled.
-
-Not hex, nor sixty-four, but tailored to fit,
-I am half of the right triangle,
-In a specialized role, I quietly sit.
-What am I?""",
+          encodedClue: """Silent in systems, day after day,
+Letters and numbers in my display.
+Half of a square's diagonal way,
+Not sixty-four or two's parade.
+When QR codes need to shrink their size,
+In health passes, there I reside.
+What encoding am I?""",
           codeFilePath: 'assets/codes/vigilant.txt',
         ),
       ],
