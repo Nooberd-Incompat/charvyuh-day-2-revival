@@ -4,7 +4,6 @@ import '../../core/enums/encoding_type.dart';
 import '../../core/models/puzzle_image.dart';
 import '../../core/models/puzzle_question.dart';
 
-
 /*
 keep_guessing -> arjun
 guess->bhishma
@@ -33,7 +32,7 @@ class PuzzleRepository {
           id: "arjuna_q1", // Added ID for the question
           question: "Who is holding the weapon?",
           answer: "Arjun",
-          encodedClue:  """
+          encodedClue: """
         I turn plain text to a cryptic stream,
 With letters, digits, and symbols, it seems.
 No cloak of disguise, but compact in form,
@@ -55,7 +54,8 @@ What am I?
       questions: [
         PuzzleQuestion(
           id: "bhishma_q1",
-          question: "How many horses are there and what is the colour of the mighty hero's dhoti. Format of the answer: 14 Black",
+          question:
+              "How many horses are there and what is the colour of the mighty hero's dhoti. Format of the answer: 14 Black",
           answer: "3 Yellow",
           encodedClue: """I take your data and break it apart,
                           Into 32 symbols, to play my part.
@@ -75,13 +75,14 @@ What am I?
       questions: [
         PuzzleQuestion(
           id: "draupadi_q1",
-          question: "What is the colour of her cloth and who is on top right corner. Format of the answer: Colour Naruto",
+          question:
+              "What is the colour of her cloth and who is on top right corner. Format of the answer: Colour Naruto",
           answer: "White Krishna",
           encodedClue: """I’m compact and clever, not often in sight,
 In the world of QR, I make data light.
 A mix of letters and numbers I hold,
 Shrinking bytes down, precise and controlled.
-
+I am half of the right triangle,
 Not hex, nor sixty-four, but tailored to fit,
 In a specialized role, I quietly sit.
 What am I?""",
@@ -98,7 +99,8 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "ekalavya_q1",
-          question: "What is the student holding in his hand, which hand is it and how many people are there in image. Format of Ans: Iphone Right 400",
+          question:
+              "What is the student holding in his hand, which hand is it and how many people are there in image. Format of Ans: Iphone Right 400",
           answer: "Knife Left 3",
           encodedClue: """I take your text and stretch it wide,
                           With 85 symbols, nothing to hide.
@@ -118,7 +120,8 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "gandhari_q1",
-          question: "How many human legs are visible and what is the colour of the saree. Format of Ans: 44 Black",
+          question:
+              "How many human legs are visible and what is the colour of the saree. Format of Ans: 44 Black",
           answer: "5 Yellow",
           encodedClue: """I take your data and break it apart,
 Into 32 symbols, to play my part.
@@ -138,7 +141,8 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "kamsa_q1",
-          question: "What are the objects fallen on the ground(answer in alphabetical order). Format of Ans: KanyeWest Pen Pencil",
+          question:
+              "What are the objects fallen on the ground(answer in alphabetical order). Format of Ans: KanyeWest Pen Pencil",
           answer: "Crown Shield Sword",
           encodedClue: """I turn plain text to a cryptic stream,
 With letters, digits, and symbols, it seems.
@@ -160,7 +164,8 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "krishna_mountain_q1",
-          question: "Under the hill he holds high, how many humans gather for shelter?",
+          question:
+              "Under the hill he holds high, how many humans gather for shelter?",
           answer: "16",
           encodedClue: """I’m compact and clever, not often in sight,
 In the world of QR, I make data light.
@@ -168,6 +173,7 @@ A mix of letters and numbers I hold,
 Shrinking bytes down, precise and controlled.
 
 Not hex, nor sixty-four, but tailored to fit,
+I am half of the right triangle,
 In a specialized role, I quietly sit.
 What am I?""",
           codeFilePath: 'assets/codes/vigilant.txt',
@@ -184,7 +190,8 @@ What am I?""",
         PuzzleQuestion(
           //base85
           id: "dhritarashtra_q1",
-          question: "What is the colour of the messenger , the king and the cushions he is sitting on. Format of Ans: Black Black Orange",
+          question:
+              "What is the colour of the messenger , the king and the cushions he is sitting on. Format of Ans: Black Black Orange",
           answer: "Yellow Pink Blue",
           encodedClue: """I take your text and stretch it wide,
 With 85 symbols, nothing to hide.
@@ -204,7 +211,8 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "mahabharat_q1",
-          question: "How many colours of dhoti are the soldiers wearing?How many colours are in the flag?What animal is there in the pciture Format: 12 4 Cow",
+          question:
+              "How many colours of dhoti are the soldiers wearing?How many colours are in the flag?What animal is there in the pciture Format: 12 4 Cow",
           answer: "2 2 Elephant",
           encodedClue: """I stretch beyond the common scale,
 Not limited by sixty-four or fifty-eight or ninety-one,
@@ -225,7 +233,8 @@ What encoding am I?""",
       questions: [
         PuzzleQuestion(
           id: "chariot_q1",
-          question: "What is thee colour of horse and how many chariots are there and what is the colour of the flag in main chariot? Format: Magenta 10 Magenta",
+          question:
+              "What is thee colour of horse and how many chariots are there and what is the colour of the flag in main chariot? Format: Magenta 10 Magenta",
           answer: "White 2 Orange",
           encodedClue: """I stretch beyond the common scale,
 Not limited by sixty-four or fifty-eight or ninety-one,
@@ -237,7 +246,6 @@ What encoding am I?""",
         ),
       ],
     ),
-
   ];
 
   // Modified to return both image and question for better control

@@ -1,6 +1,21 @@
+import 'core/constants/theme_constants.dart';
+import 'presentation/screens/team_id_screen.dart';
 import 'package:flutter/material.dart';
-import 'app.dart';
 
 void main() {
-  runApp(const ChakravyuhApp());
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'The First Revival',
+      theme: appTheme,
+      debugShowCheckedModeBanner: false,
+      home: TeamIdScreen(),
+    );
+  }
 }
