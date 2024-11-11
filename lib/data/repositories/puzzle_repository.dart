@@ -61,7 +61,7 @@ What am I?
                           Into 32 symbols, to play my part.
                           It’s still there, but hard to find,
                           A simple encoding for peace of mind.
-                          What am I?""",
+                          What base am I?""",
           codeFilePath: 'assets/codes/guess.txt',
         ),
       ],
@@ -207,12 +207,11 @@ What am I?""",
           question: "How many colours of dhoti are the soldiers wearing?How many colours are in the flag?What animal is there in the pciture Format: 12 4 Cow",
           answer: "2 2 Elephant",
           encodedClue: """I stretch beyond the common scale,
-Not limited by sixty-four or fifty-eight,
+Not limited by sixty-four or fifty-eight or ninety-one,
 A curious set where symbols trail,
 Packed tightly, no room for fate.
-With ninety-three in hand,
-I drop one, and then I stand.
-What am I?""",
+With ninety-two in hand,.
+What encoding am I?""",
           codeFilePath: 'assets/codes/massacre.txt',
         ),
       ],
@@ -229,12 +228,11 @@ What am I?""",
           question: "What is thee colour of horse and how many chariots are there and what is the colour of the flag in main chariot? Format: Magenta 10 Magenta",
           answer: "White 2 Orange",
           encodedClue: """I stretch beyond the common scale,
-Not limited by sixty-four or fifty-eight,
+Not limited by sixty-four or fifty-eight or ninety-one,
 A curious set where symbols trail,
 Packed tightly, no room for fate.
-With ninety-three in hand,
-I drop one, and then I stand.
-What am I?""",
+With ninety-two in hand,.
+What encoding am I?""",
           codeFilePath: 'assets/codes/codefile.txt',
         ),
       ],
@@ -270,11 +268,6 @@ What am I?""",
 
 /*
 base64
-I turn your text into a form obscure,
-With letters and digits, I’m easy to endure.
-I scramble things, but not for disguise,
-Just to make them fit in a smaller size.
-What am I?
 
 //new one
 I turn plain text to a cryptic stream,
@@ -299,9 +292,9 @@ In the world of QR, I make data light.
 A mix of letters and numbers I hold,
 Shrinking bytes down, precise and controlled.
 
-Not hex, nor sixty-four, but tailored to fit,
+Not hex, nor sixty-four,nor thirty two but tailored to fit,
 In a specialized role, I quietly sit.
-What am I?
+What base am I?
 
 
 
@@ -319,5 +312,5 @@ A curious set where symbols trail,
 Packed tightly, no room for fate.
 With ninety-three in hand,
 I drop one, and then I stand.
-What am I?
+What encoding am I?
 */
