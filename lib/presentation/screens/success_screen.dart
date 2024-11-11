@@ -42,7 +42,8 @@ class SuccessScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Team $teamId has emerged from the Chakravyuh!',
+                    """Team $teamId has been Revived!
+                    Good Work Soldier!""",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
