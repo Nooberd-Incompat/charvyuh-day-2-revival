@@ -98,8 +98,8 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "ekalavya_q1",
-          question: "What is the student holding in his hand, which hand is it and how many people are there in image. Format of Ans: Iphone Which_Hand 400",
-          answer: "Knife 3",
+          question: "What is the student holding in his hand, which hand is it and how many people are there in image. Format of Ans: Iphone Right 400",
+          answer: "Knife Left 3",
           encodedClue: """I take your text and stretch it wide,
                           With 85 symbols, nothing to hide.
 It’s compact, it’s dense, it’s hard to decode,
@@ -118,7 +118,7 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "gandhari_q1",
-          question: "How many human legs are visible and what is the colour of the saree. Format of Ans: 79 Black",
+          question: "How many human legs are visible and what is the colour of the saree. Format of Ans: 44 Black",
           answer: "5 Yellow",
           encodedClue: """I take your data and break it apart,
 Into 32 symbols, to play my part.
@@ -138,12 +138,14 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "kamsa_q1",
-          question: "What are the objects fallen on the ground. Format of Ans: Pen Pencil KanyeWest",
-          answer: "Crown Sword Shield",
-          encodedClue: """I turn your text into a form obscure,
-With letters and digits, I’m easy to endure.
-I scramble things, but not for disguise,
-Just to make them fit in a smaller size.
+          question: "What are the objects fallen on the ground(answer in alphabetical order). Format of Ans: KanyeWest Pen Pencil",
+          answer: "Crown Shield Sword",
+          encodedClue: """I turn plain text to a cryptic stream,
+With letters, digits, and symbols, it seems.
+No cloak of disguise, but compact in form,
+Reducing the size is my typical norm.
+I pad with equals, round off my ends,
+In groups of three, my work depends.
 What am I?""",
           codeFilePath: 'assets/codes/past_comes_back.txt',
         ),
@@ -182,8 +184,8 @@ What am I?""",
         PuzzleQuestion(
           //base85
           id: "dhritarashtra_q1",
-          question: "What is the colour of the messenger , the king and the cushions he is sitting on. Format of Ans: Pink Red Blue",
-          answer: "14",
+          question: "What is the colour of the messenger , the king and the cushions he is sitting on. Format of Ans: Black Black Orange",
+          answer: "Yellow Pink Blue",
           encodedClue: """I take your text and stretch it wide,
 With 85 symbols, nothing to hide.
 It’s compact, it’s dense, it’s hard to decode,
@@ -202,9 +204,15 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "mahabharat_q1",
-          question: "What divine weapon is being discussed and to whom? Format: Sudarshan Arjuna",
-          answer: "14",
-          encodedClue: """Some clue about base92 encoding""",
+          question: "How many colours of dhoti are the soldiers wearing?How many colours are in the flag?What animal is there in the pciture Format: 12 4 Cow",
+          answer: "2 2 Elephant",
+          encodedClue: """I stretch beyond the common scale,
+Not limited by sixty-four or fifty-eight,
+A curious set where symbols trail,
+Packed tightly, no room for fate.
+With ninety-three in hand,
+I drop one, and then I stand.
+What am I?""",
           codeFilePath: 'assets/codes/massacre.txt',
         ),
       ],
@@ -218,9 +226,15 @@ What am I?""",
       questions: [
         PuzzleQuestion(
           id: "chariot_q1",
-          question: "What divine weapon is being discussed and to whom? Format: Sudarshan Arjuna",
-          answer: "14",
-          encodedClue: """Some clue about base92 encoding""",
+          question: "What is thee colour of horse and how many chariots are there and what is the colour of the flag in main chariot? Format: Magenta 10 Magenta",
+          answer: "White 2 Orange",
+          encodedClue: """I stretch beyond the common scale,
+Not limited by sixty-four or fifty-eight,
+A curious set where symbols trail,
+Packed tightly, no room for fate.
+With ninety-three in hand,
+I drop one, and then I stand.
+What am I?""",
           codeFilePath: 'assets/codes/codefile.txt',
         ),
       ],
