@@ -4,10 +4,26 @@ import '../../core/enums/encoding_type.dart';
 import '../../core/models/puzzle_image.dart';
 import '../../core/models/puzzle_question.dart';
 
+
+/*
+keep_guessing -> arjun
+guess->bhishma
+honor->draupadi
+revelations->eklavya
+purgatory->gandhari
+past_comes_back->kamsa
+vigliant->krishna
+rex_caecus->dhritrahstra
+codefile->chariot scene
+massacre ->mahabharat
+
+
+ */
 class PuzzleRepository {
   static final List<PuzzleImage> puzzleImages = [
     PuzzleImage(
       //ARJUN
+      //base64
       id: "arjuna_1", // Added ID for the image
       imagePath: 'assets/images/arjuna_aiming.png',
       name: 'Arjuna\'s Aim',
@@ -18,17 +34,20 @@ class PuzzleRepository {
           question: "Who is holding the weapon?",
           answer: "Arjun",
           encodedClue:  """
-        I turn your text into a form obscure,
-        With letters and digits, I'm easy to endure.
-        I scramble things, but not for disguise,
-        Just to make them fit in a smaller size.
-        What am I?
+        I turn plain text to a cryptic stream,
+With letters, digits, and symbols, it seems.
+No cloak of disguise, but compact in form,
+Reducing the size is my typical norm.
+I pad with equals, round off my ends,
+In groups of three, my work depends.
+What am I?
     """,
           codeFilePath: 'assets/codes/keep_guessing.txt',
         ),
       ],
     ),
     PuzzleImage(
+      //base32
       id: "bhishma_1",
       imagePath: 'assets/images/bhishma_scene.jpg',
       name: 'Bhishma Scene',
@@ -48,6 +67,7 @@ class PuzzleRepository {
       ],
     ),
     PuzzleImage(
+      //base45
       id: "draupadi_1",
       imagePath: 'assets/images/draupadi_scene.jpg',
       name: 'Draupadi Scene',
@@ -56,17 +76,21 @@ class PuzzleRepository {
         PuzzleQuestion(
           id: "draupadi_q1",
           question: "What is the colour of her cloth and who is on top right corner. Format of the answer: Colour Naruto",
-          answer: "14",
-          encodedClue: """I trim the clutter, keep it clean,
-                          Letters and numbers, but some not seen.
-                          No zeros or ones, to confuse the view,
-                          Just enough to keep it clear and true.
-                          What am I?""",
+          answer: "White Krishna",
+          encodedClue: """I’m compact and clever, not often in sight,
+In the world of QR, I make data light.
+A mix of letters and numbers I hold,
+Shrinking bytes down, precise and controlled.
+
+Not hex, nor sixty-four, but tailored to fit,
+In a specialized role, I quietly sit.
+What am I?""",
           codeFilePath: 'assets/codes/honor.txt',
         ),
       ],
     ),
     PuzzleImage(
+      //base85
       id: "ekalavya_1",
       imagePath: 'assets/images/ekalavya_scene.jpg',
       name: 'Ekalavya Scene',
@@ -75,13 +99,18 @@ class PuzzleRepository {
         PuzzleQuestion(
           id: "ekalavya_q1",
           question: "What is the student holding in his hand, which hand is it and how many people are there in image. Format of Ans: Iphone Which_Hand 400",
-          answer: "14",
-          encodedClue: "Some clue about base85 encoding",
+          answer: "Knife 3",
+          encodedClue: """I take your text and stretch it wide,
+                          With 85 symbols, nothing to hide.
+It’s compact, it’s dense, it’s hard to decode,
+But useful when you need a lighter load.
+What am I?""",
           codeFilePath: 'assets/codes/revelations.txt',
         ),
       ],
     ),
     PuzzleImage(
+      //base32
       id: "gandhari_1",
       imagePath: 'assets/images/gandhari_scene.jpg',
       name: 'Gandhari Scene',
@@ -90,13 +119,18 @@ class PuzzleRepository {
         PuzzleQuestion(
           id: "gandhari_q1",
           question: "How many human legs are visible and what is the colour of the saree. Format of Ans: 79 Black",
-          answer: "14",
-          encodedClue: "Some clue about base32 encoding",
+          answer: "5 Yellow",
+          encodedClue: """I take your data and break it apart,
+Into 32 symbols, to play my part.
+It’s still there, but hard to find,
+A simple encoding for peace of mind.
+What am I?""",
           codeFilePath: 'assets/codes/purrgatory.txt',
         ),
       ],
     ),
     PuzzleImage(
+      //base64
       id: "kamsa_1",
       imagePath: 'assets/images/kamsa_scene.jpg',
       name: 'Kamsa Scene',
@@ -105,13 +139,18 @@ class PuzzleRepository {
         PuzzleQuestion(
           id: "kamsa_q1",
           question: "What are the objects fallen on the ground. Format of Ans: Pen Pencil KanyeWest",
-          answer: "14",
-          encodedClue: "Some clue about base64 encoding",
-          codeFilePath: 'assets/codes/purrgatory.txt',
+          answer: "Crown Sword Shield",
+          encodedClue: """I turn your text into a form obscure,
+With letters and digits, I’m easy to endure.
+I scramble things, but not for disguise,
+Just to make them fit in a smaller size.
+What am I?""",
+          codeFilePath: 'assets/codes/past_comes_back.txt',
         ),
       ],
     ),
     PuzzleImage(
+      //base45
       id: "krishna_mountain_1",
       imagePath: 'assets/images/krishna_mountain.jpg',
       name: 'Krishna Mountain Scene',
@@ -119,43 +158,74 @@ class PuzzleRepository {
       questions: [
         PuzzleQuestion(
           id: "krishna_mountain_q1",
-          question: "Under the hill he holds high, how many souls gather for shelter?",
-          answer: "14",
-          encodedClue: "Some clue about base58 encoding",
-          codeFilePath: 'assets/codes/purrgatory.txt',
+          question: "Under the hill he holds high, how many humans gather for shelter?",
+          answer: "16",
+          encodedClue: """I’m compact and clever, not often in sight,
+In the world of QR, I make data light.
+A mix of letters and numbers I hold,
+Shrinking bytes down, precise and controlled.
+
+Not hex, nor sixty-four, but tailored to fit,
+In a specialized role, I quietly sit.
+What am I?""",
+          codeFilePath: 'assets/codes/vigilant.txt',
         ),
       ],
     ),
     PuzzleImage(
+      //base85
       id: "dhritarashtra_1",
       imagePath: 'assets/images/dhritarashtra_scene.jpg',
       name: 'Dhritarashtra Scene',
       encodingType: EncodingType.hexadecimal,
       questions: [
         PuzzleQuestion(
+          //base85
           id: "dhritarashtra_q1",
-          question: "What is unique about the king's appearance and what object is he holding? Format: Blindfolded Staff",
+          question: "What is the colour of the messenger , the king and the cushions he is sitting on. Format of Ans: Pink Red Blue",
           answer: "14",
-          encodedClue: "Some clue about base85 encoding",
-          codeFilePath: 'assets/codes/purrgatory.txt',
+          encodedClue: """I take your text and stretch it wide,
+With 85 symbols, nothing to hide.
+It’s compact, it’s dense, it’s hard to decode,
+But useful when you need a lighter load.
+What am I?""",
+          codeFilePath: 'assets/codes/rex_caecus.txt',
         ),
       ],
     ),
     PuzzleImage(
-      id: "krishna_advice_1",
+      //base92
+      id: "mahabharat_1",
+      imagePath: 'assets/images/mahabharat.jpg',
+      name: 'Krishna Advice Scene',
+      encodingType: EncodingType.hexadecimal,
+      questions: [
+        PuzzleQuestion(
+          id: "mahabharat_q1",
+          question: "What divine weapon is being discussed and to whom? Format: Sudarshan Arjuna",
+          answer: "14",
+          encodedClue: """Some clue about base92 encoding""",
+          codeFilePath: 'assets/codes/massacre.txt',
+        ),
+      ],
+    ),
+    PuzzleImage(
+      //base92
+      id: "chariot_1",
       imagePath: 'assets/images/krishna_advice.jpg',
       name: 'Krishna Advice Scene',
       encodingType: EncodingType.hexadecimal,
       questions: [
         PuzzleQuestion(
-          id: "krishna_advice_q1",
+          id: "chariot_q1",
           question: "What divine weapon is being discussed and to whom? Format: Sudarshan Arjuna",
           answer: "14",
-          encodedClue: "Some clue about base58 encoding",
-          codeFilePath: 'assets/codes/purrgatory.txt',
+          encodedClue: """Some clue about base92 encoding""",
+          codeFilePath: 'assets/codes/codefile.txt',
         ),
       ],
     ),
+
   ];
 
   // Modified to return both image and question for better control
@@ -192,6 +262,16 @@ I scramble things, but not for disguise,
 Just to make them fit in a smaller size.
 What am I?
 
+//new one
+I turn plain text to a cryptic stream,
+With letters, digits, and symbols, it seems.
+No cloak of disguise, but compact in form,
+Reducing the size is my typical norm.
+I pad with equals, round off my ends,
+In groups of three, my work depends.
+What am I?
+
+
 base32
 I take your data and break it apart,
 Into 32 symbols, to play my part.
@@ -199,12 +279,16 @@ It’s still there, but hard to find,
 A simple encoding for peace of mind.
 What am I?
 
-base58
-I trim the clutter, keep it clean,
-Letters and numbers, but some not seen.
-No zeros or ones, to confuse the view,
-Just enough to keep it clear and true.
+base45
+I’m compact and clever, not often in sight,
+In the world of QR, I make data light.
+A mix of letters and numbers I hold,
+Shrinking bytes down, precise and controlled.
+
+Not hex, nor sixty-four, but tailored to fit,
+In a specialized role, I quietly sit.
 What am I?
+
 
 
 base85
@@ -212,5 +296,14 @@ I take your text and stretch it wide,
 With 85 symbols, nothing to hide.
 It’s compact, it’s dense, it’s hard to decode,
 But useful when you need a lighter load.
+What am I?
+
+base92
+I stretch beyond the common scale,
+Not limited by sixty-four or fifty-eight,
+A curious set where symbols trail,
+Packed tightly, no room for fate.
+With ninety-three in hand,
+I drop one, and then I stand.
 What am I?
 */

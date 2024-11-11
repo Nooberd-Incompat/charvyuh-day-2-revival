@@ -85,6 +85,11 @@ flutter:
     - assets/codes/keep_guessing.txt
     - assets/codes/purrgatory.txt
     - assets/codes/revelations.txt
+    - assets/codes/rex_caecus.txt
+    - assets/codes/codefile.txt
+    - assets/codes/past_comes_back.txt
+    - assets/codes/massacre.txt
+    - assets/codes/vigilant.txt
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
